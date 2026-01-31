@@ -1,69 +1,197 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://github.com/walkxcode/dashboard-icons/blob/main/png/jellyfin.png?raw=true" width="200" alt="Nest Logo" /></a>
-</p>
+# Discord Bot Boilerplate
 
-  <br/>
-  <h1 align="center">Jellyfin Discord Bot</h1>
+A production-ready Discord bot boilerplate built with NestJS and Discord.js, featuring voice capabilities, health checks, and a modular architecture.
 
-  <p align="center">A simple <a href="https://discord.com" target="_blank">Discord</a> bot that enables you to broadcast<br/>your <a href="https://jellyfin.org/" target="_blank">Jellyfin Media Server</a> music collection to voice channels.<br/>It's Open Source and can easily be hosted by yourself!</p>
+## Features
 
-<p align="center">
-  <small>Thanky you <a href="https://github.com/manuel-rw/jellyfin-discord-music-bot/">manuel-rw</a>, <a href="https://github.com/KGT1/jellyfin-discord-music-bot/">KGT1</a> for starting this project!<br/>This is a fork of their original repository because i need to big modify them to match my use case</small>
-</p>
+- 🎯 **NestJS Framework** - Enterprise-grade architecture with dependency injection
+- 🎵 **Voice Support** - Built-in voice channel capabilities with @discordjs/voice
+- 🏥 **Health Checks** - Integrated health monitoring with @nestjs/terminus
+- 📝 **Command System** - Slash commands using @discord-nestjs/core
+- 🔄 **Event System** - Event-driven architecture with @nestjs/event-emitter
+- 🐳 **Docker Ready** - Containerized deployment support
+- 🧪 **Testing** - Unit and E2E tests with Jest
+- 📊 **Web Dashboard** - Static file serving for bot management UI
+- 🎨 **TypeScript** - Full type safety throughout the codebase
 
-<hr/>
-<br/>
+## Prerequisites
 
-## 💻 What is this repository aiming for
-To be clear, Yes! this bot is named Jellyfin Discord Bot. But actually I'm aiming to support the other source provider as well such as Youtube and may have some other private provider that i can't tell you how to enable or use it and might require the external service that i can't provide the code for.     
-     
-This is my hobby project, Feel free to use or contribute as you want!
+- Node.js 24.x or higher
+- npm or yarn
+- Discord Bot Token ([Get one here](https://discord.com/developers/applications))
 
-## ✨ Features
-- Play the music from your existsing Jellyfin library!
-- Multiple discord server support (All server share the same jellyfin library)
-- Supports ``Music``, ``Playlists`` and ``Albums`` from your Jellyfin instance
-- Easy usage with Discord command system (eg. ``/play``, ``/pause``, ...)
+## Installation
 
-
-## 📌 About this fork
-This project was fork from [manual-rw on Github](https://github.com/manuel-rw/jellyfin-discord-music-bot/) for my own purpose. I came across and interested in this project,
-By the way, The many things is missing from that repo and some of them is just my needs. So i made a fork and try to do my best to fit this bot to my use cases.
-
-## ⛔ Limitations
-- Bot can be use on multiple discord servers concurrently, But sharding is not support for large amount of server (1000+)
-- Album covers are not visible, unless you enable the JELLYFIN_INTERNAL_IMAGE_ENABLED which require you jellyfin instance to be public and will expose your jellyfin server address
-- Streaming any video content in voice channels (Discord Bot API Limitation)
-
-## 🚀 Installation
-
-Please check out the Wiki section in the repository for installation instructions:
-
-https://github.com/SpeedxPz/jellyfin-discord-music-bot/wiki
-
-For docker image you can choose your suitable image     
-     
-Stable release
-```
-registry.takumipro.dev/public/jellyfin-discord-music-bot:latest
+1. Clone the repository:
+```bash
+git clone https://github.com/SpeedxPz/discord-bot-boilerplate.git
+cd discord-bot-boilerplate
 ```
 
-Development image (New feature frequenly but also buggy and unstable)
+2. Install dependencies:
+```bash
+npm install
 ```
-registry.takumipro.dev/public/jellyfin-discord-music-bot:dev
+
+3. Create a `.env` file in the root directory:
+```env
+# Required
+DISCORD_CLIENT_TOKEN=your_discord_bot_token_here
+
+
+# Optional Configuration
+LOG_LEVEL=LOG
+PORT=3000
+ALLOW_EVERYONE_FOR_DEFAULT_PERMS=false
 ```
 
-## 💻 Development
+## Usage
 
-I'm open to any contributions to this project. You can start contributing using the following commands, after executing the installation commands:
+### Development
 
-## 👤 Credits
-- https://tabler-icons.io/
-- https://docs.nestjs.com/
-- https://discord.js.org/
-- https://github.com/fjodor-rybakov/discord-nestjs
-- https://github.com/jellyfin/jellyfin-sdk-typescript
-- https://jellyfin.org/
-- https://github.com/KGT1/jellyfin-discord-music-bot
-- https://gitmoji.dev/
-- https://github.com/manuel-rw/jellyfin-discord-music-bot
+Start the bot in development mode with hot reload:
+```bash
+npm run start:dev
+```
+
+### Production
+
+Build and run in production:
+```bash
+npm run build
+npm run start:prod
+```
+
+### Docker
+
+Build and run with Docker:
+```bash
+docker build -t discord-bot .
+docker run -p 3000:3000 --env-file .env discord-bot
+```
+
+## Project Structure
+
+```
+src/
+├── app.module.ts              # Main application module
+├── main.ts                    # Application entry point
+├── clients/
+│   └── discord/               # Discord client services
+│       ├── discord.config.service.ts
+│       ├── discord.message.service.ts
+│       ├── discord.module.ts
+│       └── discord.voice.service.ts
+├── commands/                  # Bot commands
+│   ├── command.module.ts
+│   └── help/
+│       └── help.command.ts
+├── health/                    # Health check endpoints
+│   ├── health.controller.ts
+│   └── indicators/
+│       └── discord.indicator.ts
+├── middleware/                # Custom middleware
+├── models/                    # Data models
+├── types/                     # TypeScript type definitions
+└── utils/                     # Utility functions
+```
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run build` | Build the project for production |
+| `npm run start` | Start the bot |
+| `npm run start:dev` | Start in development mode with watch |
+| `npm run start:debug` | Start in debug mode |
+| `npm run start:prod` | Start production build |
+| `npm run lint` | Lint and fix code |
+| `npm run format` | Format code with Prettier |
+| `npm run test` | Run unit tests |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:cov` | Generate test coverage report |
+| `npm run test:e2e` | Run end-to-end tests |
+
+## Environment Variables
+
+### Required
+
+- `DISCORD_CLIENT_TOKEN` - Your Discord bot token
+
+### Optional
+
+- `LOG_LEVEL` - Logging level (ERROR, WARN, LOG, DEBUG, VERBOSE) - Default: LOG
+- `PORT` - HTTP server port - Default: 3000
+- `ALLOW_EVERYONE_FOR_DEFAULT_PERMS` - Allow @everyone role for commands - Default: false
+
+## Adding Commands
+
+Create a new command in `src/commands/`:
+
+```typescript
+import { Command, Handler, IA } from '@discord-nestjs/core';
+import { Injectable } from '@nestjs/common';
+import { CommandInteraction } from 'discord.js';
+
+@Injectable()
+@Command({
+  name: 'mycommand',
+  description: 'Description of your command',
+})
+export class MyCommand {
+  @Handler()
+  async handler(@IA() interaction: CommandInteraction): Promise<void> {
+    await interaction.reply('Hello from my command!');
+  }
+}
+```
+
+Register the command in `src/commands/command.module.ts`.
+
+## Health Checks
+
+The bot exposes health check endpoints at:
+- `http://localhost:3000/health` - Overall health status
+- Discord connection status included via custom indicator
+
+## Testing
+
+Run the test suite:
+```bash
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## Support
+
+- 📝 [Report an issue](https://github.com/SpeedxPz/discord-bot-boilerplate/issues/new/choose)
+- 💬 [GitHub Discussions](https://github.com/SpeedxPz/discord-bot-boilerplate/discussions)
+- 📖 [Documentation](https://github.com/SpeedxPz/discord-bot-boilerplate)
+
+## Acknowledgments
+
+- Built with [NestJS](https://nestjs.com/)
+- Powered by [Discord.js](https://discord.js.org/)
+- Discord integration via [@discord-nestjs/core](https://github.com/fjodor-rybakov/discord-nestjs)
+
+---
+
+Made with ❤️ by [SpeedxPz](https://github.com/SpeedxPz)
