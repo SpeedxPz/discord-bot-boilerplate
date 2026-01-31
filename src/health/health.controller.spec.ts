@@ -1,0 +1,78 @@
+import { InjectionToken } from '@nestjs/common';
+import {
+  HealthCheckResult,
+  HealthCheckService,
+  HealthIndicatorResult,
+} from '@nestjs/terminus';
+import { HealthCheckExecutor } from '@nestjs/terminus/dist/health-check/health-check-executor.service';
+import { Test } from '@nestjs/testing';
+
+import { useDefaultMockerToken } from '../utils/tests/defaultMockerToken';
+
+import { HealthController } from './health.controller';
+
+import { DiscordHealthIndicator } from './indicators/discord.indicator';
+
+describe('HealthController', () => {
+  let controller: HealthController;
+
+  beforeEach(async () => {
+    const moduleRef = await Test.createTestingModule({
+      controllers: [HealthController],
+    })
+      .useMocker((token) => {
+
+        if (token === DiscordHealthIndicator) {
+          return {
+            isHealthy: jest.fn().mockResolvedValue({
+              discord: {
+                status: 'up',
+              },
+            } as HealthIndicatorResult),
+          };
+        }
+
+        if (token === HealthCheckService) {
+          return new HealthCheckService(
+            new HealthCheckExecutor(),
+            { getErrorMessage: jest.fn() },
+            { log: jest.fn(), error: jest.fn(), warn: jest.fn() },
+          );
+        }
+
+        return useDefaultMockerToken(token as InjectionToken);
+      })
+      .compile();
+
+    controller = moduleRef.get<HealthController>(HealthController);
+  });
+
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
+
+  it('should return health status', async () => {
+    const result = await controller.healthCheck();
+
+    expect(result).toStrictEqual({
+      details: {
+        discord: {
+          status: 'up',
+        },
+        jellyfin: {
+          status: 'up',
+        },
+      },
+      error: {},
+      info: {
+        discord: {
+          status: 'up',
+        },
+        jellyfin: {
+          status: 'up',
+        },
+      },
+      status: 'ok',
+    } as HealthCheckResult);
+  });
+});
