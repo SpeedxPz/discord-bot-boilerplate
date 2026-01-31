@@ -21,21 +21,21 @@ export class HelpCommand {
     await interaction.reply({
       embeds: [
         this.discordMessageService.buildMessage({
-          title: 'Jellyfin Discord Bot',
+          title: 'TakumiPro Discord Bot Template',
           description:
-            'Jellyfin Discord Bot is an open source and self-hosted Discord bot, that integrates with your Jellyfin Media server and enables you to playback music from your libraries. You can use the Discord Slash Commands to invoke bot commands.',
-          authorUrl: 'https://github.com/SpeedxPz/jellyfin-discord-music-bot',
+            'Boilerplate to getting started with discord bot',
+          authorUrl: 'https://github.com/SpeedxPz/discord-bot-boilerplate',
           mixin(embedBuilder) {
             return embedBuilder.addFields([
               {
                 name: 'Report an issue',
                 value:
-                  'https://github.com/SpeedxPz/jellyfin-discord-music-bot/issues/new/choose',
+                  'https://github.com/SpeedxPz/discord-bot-boilerplate/issues/new/choose',
                 inline: true,
               },
               {
                 name: 'Source code',
-                value: 'https://github.com/SpeedxPz/jellyfin-discord-music-bot',
+                value: 'https://github.com/SpeedxPz/discord-bot-boilerplate',
                 inline: true,
               },
             ]);

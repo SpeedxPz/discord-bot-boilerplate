@@ -1,8 +1,16 @@
-import { formatDuration, intervalToDuration } from 'date-fns';
+import { formatDuration, intervalToDuration, Duration } from 'date-fns';
 
 export const formatMillisecondsAsHumanReadable = (
   milliseconds: number,
-  format = ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds'],
+  format: (keyof Duration)[] = [
+    'years',
+    'months',
+    'weeks',
+    'days',
+    'hours',
+    'minutes',
+    'seconds',
+  ],
 ) => {
   const duration = formatDuration(
     intervalToDuration({
